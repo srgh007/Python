@@ -1,3 +1,4 @@
+import re
 import urllib.request
 
 import requests
@@ -10,7 +11,7 @@ header = {"User-Agent": str(ua.chrome)}
 # print(header)
 
 
-url = "https://matchtv.ru/football/worldcup"
+url = "https://www.sport.ru/football/chm-2022/Playoff/"
 
 # htmlContent = requests.get(url, headers=header)
 # print(htmlContent)
@@ -23,11 +24,14 @@ f = urllib.request.urlopen(req)
 html = f.read()
 
 soup = BeautifulSoup(html, "html.parser")
-news = soup.find_all("div")
-f = open("out.txt", "a", encoding="utf-8")
+news = soup.find_all(class_=re.compile("gs3f0-s[1-9]"))
+f = open("out.txt", "w", encoding="utf-8")
 try:
     for l in news:
-        f.write(l.get_text())
+        # if l.get_text() in ":1234567890":
+        #     f.write(l.get_text())
+        # else:
+        f.write(l.get_text() + "\n")
 finally:
     f.close()
 # print(news)
