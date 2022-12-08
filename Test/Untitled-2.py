@@ -9,7 +9,8 @@ cursor = conn.cursor()
 cursor.execute("SELECT * FROM tasks LIMIT 10")
 records = cursor.fetchall()
 
-print(records)
+for row in records:
+    print(row)
 
 cursor.close()
 conn.close()
