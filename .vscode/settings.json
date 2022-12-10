@@ -12,5 +12,8 @@
     },
     "workbench.colorCustomizations": {
         "statusBar.background": "#4800ff"
-    }
+    },
+    "python.analysis.diagnosticSeverityOverrides": {
+    "reportWildcardImportFromLibrary": "none"
+}
 }
