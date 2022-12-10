@@ -70,11 +70,11 @@ combobox.grid(row=1, column=1, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW)
 
 
 def clicked():
-    print("clicked")
-    var = messagebox.askyesno("Title", "Your question goes here?")
+    print("")
+    # var = messagebox.askyesno("Title", "Your question goes here?")
 
 
-btn = ttk.Button(root, text="Button", command=clicked)
+btn = ttk.Button(root, text="OK", command=clicked)
 # type: ignore
 
 btn.grid(row=1, column=2, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW)
