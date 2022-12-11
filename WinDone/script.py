@@ -1,9 +1,11 @@
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from tkinter import *
 from tkinter import messagebox, ttk
 
+# import datetime
 import psycopg2
 import psycopg2.extras
+from PIL import Image, ImageTk
 from tkcalendar import Calendar, DateEntry
 
 conn = psycopg2.connect(
@@ -12,18 +14,27 @@ conn = psycopg2.connect(
 
 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-cursor.execute("SELECT * FROM tasks LIMIT 10")
+cursor.execute("SELECT * FROM tasks order by title")
 
 records = cursor.fetchall()
 
-list1 = []
+# list1 = []
+listTID = []
 
 for row in records:
-    list1.append(row["title"])
+    listTID.append(dict(title=row["title"], id=row["id"]))
+    # list1.append(row["title"])
 # type: ignore    print()
 
-cursor.close()
-conn.close()
+
+def findID(key):
+    for ltid in listTID:
+        if ltid["title"] == key:
+            return ltid["id"]
+
+
+# print([n["title"] for n in listTID])
+# print("{} {} ".format("Domino with Max ", findID("Domino with Max")))
 
 root = Tk()
 root.title("Органайзер")
@@ -47,40 +58,52 @@ root["bg"] = "#4682B4"
 root.resizable(False, False)
 # for c in range(3):
 root.columnconfigure(0, weight=1)
-root.columnconfigure(1, weight=3)
+root.columnconfigure(1, weight=1)
+root.columnconfigure(2, weight=1)
+root.columnconfigure(3, weight=1)
 # root.columnconfigure(2, weight=1)
 # for r in range(10):
 # root.rowconfigure(index=r, weight=1)
 
-firstLabel = datetime.now().strftime("=== %Y-%m-%d %H:%M ===")
+original = Image.open("WinDone\\process.png")
+resized = original.resize((30, 30), Image.Resampling.LANCZOS)
+img = ImageTk.PhotoImage(resized)
+Llogo = Label(root, image=img)
+Llogo.grid(row=0, column=0, ipadx=3, ipady=3, padx=3, pady=3, sticky=W)
+Llogo["bg"] = "#4682B4"
 
-L1 = Label(root, text="{}".format(firstLabel), font=("times new roman", 20))
-L1.grid(row=0, column=0, ipadx=3, ipady=3, padx=3, pady=3, sticky=N, columnspan=2)
+nowlabel = datetime.now().strftime("%d.%m.%Y г.")
+
+L1 = Label(root, text="{}".format(nowlabel), font=("times new roman", 16))
+L1.grid(row=0, column=1, sticky=EW, columnspan=2)
 # L1.place(x=10, y=10, width=100)
 L1["bg"] = "#4682B4"
 
-secondLabel1 = "Поставить в план:"
+toPlanLabel = "Задача"
 
-L2 = Label(root, text="{}".format(secondLabel1), font=("times new roman", 18, "bold"))
+L2 = Label(root, text="{}".format(toPlanLabel), font=("times new roman", 16, "bold"))
 L2.grid(row=1, column=0, ipadx=3, ipady=3, padx=3, pady=3, sticky=E)
 # L1.place(x=10, y=10, width=100)
 L2["bg"] = "#4682B4"
 
-secondLabel2 = ""
+taskInform = ""
 
-L3 = Label(root, text="{}".format(secondLabel2), font=("times new roman", 18, "bold"))
-L3.grid(row=3, ipadx=3, ipady=3, padx=3, pady=3, sticky=EW, columnspan=2)
+L3 = Label(root, text="{}".format(taskInform), font=("times new roman", 16, "bold"))
+L3.grid(row=3, ipadx=3, ipady=3, padx=3, pady=3, sticky=EW, columnspan=4)
 # L1.place(x=10, y=10, width=100)
 L3["bg"] = "#4682B4"
 
-combobox = ttk.Combobox(values=list1, state="readonly", font=("Arial", 12, "bold"))
+combobox = ttk.Combobox(
+    values=[n["title"] for n in listTID], state="readonly", font=("Arial", 12, "bold")
+)
 
 # edit = Entry(root, bd=5)
-combobox.grid(row=1, column=1, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW)
+combobox.grid(
+    row=1, column=1, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW, columnspan=3
+)
 
 
 def clicked():
-    print("")
     if combobox.get() == "":
         var = messagebox.showerror("Внимание!", "Задача не выбрана!")
     # var = messagebox.Message("Title", "Your question goes here?")
@@ -96,14 +119,20 @@ def clicked():
 
 
 def view_calendar():
+    if combobox.get() == "":
+        var = messagebox.showerror("Внимание!", "Задача не выбрана!")
+        return
+
     def print_sel():
         print(cal.selection_get())
         if combobox.get() == "":
             var = messagebox.showerror("Внимание!", "Задача не выбрана!")
+            top.destroy()
         else:
+            dt = datetime.now()
             dt = cal.selection_get()
             L3["text"] = 'Задача "{}" запланирована на {}'.format(
-                combobox.get(), dt.strftime("%Y.%m.%d")
+                combobox.get(), dt.strftime("%d.%m.%Y г.")
             )
         top.destroy()
 
@@ -113,9 +142,9 @@ def view_calendar():
         font="Arial 14",
         selectmode="day",
         cursor="hand1",
-        year=2018,
-        month=2,
-        day=5,
+        year=datetime.now().year,
+        month=datetime.now().month,
+        day=datetime.now().day,
     )
     top.geometry(
         "{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate)
@@ -124,13 +153,62 @@ def view_calendar():
     ttk.Button(top, text="ok", command=print_sel).pack()
 
 
+def print_date(n=True):
+    if combobox.get() == "":
+        var = messagebox.showerror("Внимание!", "Задача не выбрана!")
+        return
+    dt = date.today()
+    if not n:
+        dt = date.today() + timedelta(days=1)
+        # top.destroy()
+
+        # dt = datetime.now()
+        # dt = cal.selection_get()
+    L3["text"] = 'Задача "{}" запланирована на {}'.format(
+        combobox.get(), dt.strftime("%d.%m.%Y г.")
+    )
+
+
+columns = ("Task", "Data Start")
+
+style = ttk.Style(root)
+# set ttk theme to "clam" which support the fieldbackground option
+style.theme_use("clam")
+style.configure(
+    "Treeview",
+    background="#4682B4",
+    fieldbackground="silver",
+    foreground="white",
+)
+
+# style.configure("Button", font=("Helvetica", 12))
+
+tree = ttk.Treeview(root, columns=columns, show="headings")
+tree.heading("Task", text="Task")
+tree.heading("Data Start", text="Data Start")
+tree.grid(row=5, column=0, sticky="nsew", columnspan=4)
+
 s = ttk.Style()
 s.configure("my.TButton", font=("Helvetica", 12))
-btn2 = ttk.Button(
-    root, text="Выбрать дату задачи", command=view_calendar, style="my.TButton"
-)
-# type: ignore
-# btn2["font"] = ("Arial", 10, "bold")
-btn2.grid(row=2, column=0, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW, columnspan=3)
 
+L4 = Label(root, text="Запланировать", font=("times new roman", 16, "bold"))
+L4.grid(row=2, column=0, ipadx=3, ipady=3, padx=3, pady=3, sticky=E)
+# L1.place(x=10, y=10, width=100)
+L4["bg"] = "#4682B4"
+
+btn2 = ttk.Button(root, text="Календарь", command=view_calendar, style="my.TButton")
+btn2.grid(row=2, column=3, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW)
+
+btn3 = ttk.Button(root, text="Сегодня", command=print_date, style="my.TButton")
+btn3.grid(row=2, column=1, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW)
+
+btn4 = ttk.Button(
+    root,
+    text="Завтра",
+    command=lambda: print_date(False),
+    style="my.TButton",
+)
+btn4.grid(row=2, column=2, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW)
+cursor.close()
+conn.close()
 root.mainloop()
