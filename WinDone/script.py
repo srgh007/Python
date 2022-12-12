@@ -18,19 +18,28 @@ cursor.execute("SELECT * FROM tasks order by title")
 
 records = cursor.fetchall()
 
+cursor.close()
+conn.close()
+
 # list1 = []
-listTID = []
+# listTID = []
+db = {}
 
 for row in records:
-    listTID.append(dict(title=row["title"], id=row["id"]))
+    db[row["title"]] = dict(title=row["title"], id=row["id"])
+    # listTID.append(dict(title=row["title"], id=row["id"]))
+
     # list1.append(row["title"])
 # type: ignore    print()
 
+print(db["Domino with Max"]["id"])  # КАК БЫСТРО ПОЛУЧИТЬ ID
+# print(list(db))
 
-def findID(key):
-    for ltid in listTID:
-        if ltid["title"] == key:
-            return ltid["id"]
+
+# def findID(key):
+#     for ltid in listTID:
+#         if ltid["title"] == key:
+#             return ltid["id"]
 
 
 # print([n["title"] for n in listTID])
@@ -93,9 +102,7 @@ L3.grid(row=3, ipadx=3, ipady=3, padx=3, pady=3, sticky=EW, columnspan=4)
 # L1.place(x=10, y=10, width=100)
 L3["bg"] = "#4682B4"
 
-combobox = ttk.Combobox(
-    values=[n["title"] for n in listTID], state="readonly", font=("Arial", 12, "bold")
-)
+combobox = ttk.Combobox(values=list(db), state="readonly", font=("Arial", 12, "bold"))
 
 # edit = Entry(root, bd=5)
 combobox.grid(
@@ -116,6 +123,21 @@ def clicked():
 
 
 # top = Toplevel(root)
+def insert_data(id, data):
+    inssql = "INSERT INTO public.queue_tasks (id_task, created_at, plan_date, is_done) VALUES({}, now(), '{}', false);".format(
+        # db[combobox.get()]["id"], dt
+        id,
+        data,
+    )
+    print(inssql)
+    conn2 = psycopg2.connect(
+        dbname="strength", user="postgres", password="postgres", host="localhost"
+    )
+    cursor2 = conn2.cursor()
+    cursor2.execute(inssql)
+    conn2.commit()
+    cursor2.close()
+    conn2.close()
 
 
 def view_calendar():
@@ -134,6 +156,7 @@ def view_calendar():
             L3["text"] = 'Задача "{}" запланирована на {}'.format(
                 combobox.get(), dt.strftime("%d.%m.%Y г.")
             )
+            insert_data(db[combobox.get()]["id"], dt)
         top.destroy()
 
     top = Toplevel(root)
@@ -164,9 +187,10 @@ def print_date(n=True):
 
         # dt = datetime.now()
         # dt = cal.selection_get()
-    L3["text"] = 'Задача "{}" запланирована на {}'.format(
-        combobox.get(), dt.strftime("%d.%m.%Y г.")
+    L3["text"] = 'Задача "{}" запланирована на {} [{}]'.format(
+        combobox.get(), dt.strftime("%d.%m.%Y г."), db[combobox.get()]["id"]
     )
+    insert_data(db[combobox.get()]["id"], dt)
 
 
 columns = ("Task", "Data Start")
@@ -209,6 +233,4 @@ btn4 = ttk.Button(
     style="my.TButton",
 )
 btn4.grid(row=2, column=2, ipadx=6, ipady=6, padx=6, pady=6, sticky=EW)
-cursor.close()
-conn.close()
 root.mainloop()
