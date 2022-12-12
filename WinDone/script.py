@@ -8,6 +8,10 @@ import psycopg2.extras
 from PIL import Image, ImageTk
 from tkcalendar import Calendar, DateEntry
 
+connect_dict = dict(
+    dbname="strength", user="postgres", password="postgres", host="localhost"
+)
+
 conn = psycopg2.connect(
     dbname="strength", user="postgres", password="postgres", host="localhost"
 )
@@ -21,9 +25,58 @@ records = cursor.fetchall()
 cursor.close()
 conn.close()
 
-# list1 = []
-# listTID = []
-db = {}
+db_task_list = {}  # СПИСОК ЗАПЛАНИРОВАННЫХ ТАСКОВ
+
+
+def get_tasks(data=datetime.now(), dblist=db_task_list):
+    dblist.clear()
+    selsql = "SELECT public.tasks.title , id_task, created_at, plan_date, is_done FROM public.queue_tasks join public.tasks on (public.queue_tasks.id_task = public.tasks.id) where plan_date ='{}';".format(
+        data.strftime("%Y-%m-%d")
+    )
+    print(selsql)
+    conn3 = psycopg2.connect(
+        dbname="strength", user="postgres", password="postgres", host="localhost"
+    )
+    cursor3 = conn3.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor3.execute(selsql)
+    records = cursor3.fetchall()
+    for row in records:
+        dblist[row["title"]] = dict(
+            id_task=row["id_task"],
+            plan_date=row["plan_date"],
+            is_done=row["is_done"],
+            title=row["title"],
+        )
+    # print(list(dblist))
+    cursor3.close()
+    conn3.close()
+
+
+get_tasks()
+
+
+def update_tasks_view(treeview_element):
+    tmplist = []
+    for tsk in db_task_list:
+        db = db_task_list[tsk]["plan_date"]
+        tmplist.append((f"{tsk}", f"{db}"))
+    print(tmplist)
+    for t in tmplist:
+        treeview_element.insert("", END, values=t)
+
+
+def add_task_in_view(treeview_element, tskname, tskdate):
+    tmplist = ()
+    tmplist = (f"{tskname}", f"{tskdate}")
+    treeview_element.insert("", END, values=tmplist)  # type: ignore
+
+
+# print(db_task_list[tsk]["plan_date"])
+
+
+# print(list(db_task_list))
+
+db = {}  # СЛОВАРЬ ДЛЯ СПИСКА ТАСКОВ
 
 for row in records:
     db[row["title"]] = dict(title=row["title"], id=row["id"])
@@ -50,7 +103,7 @@ root.title("Органайзер")
 root.iconbitmap("WinDone\\process.ico")
 # root.geometry("600x400+200+200")
 
-window_height = 300
+window_height = 400
 window_width = 600
 
 screen_width = root.winfo_screenwidth()
@@ -123,9 +176,10 @@ def clicked():
 
 
 # top = Toplevel(root)
+
+
 def insert_data(id, data):
     inssql = "INSERT INTO public.queue_tasks (id_task, created_at, plan_date, is_done) VALUES({}, now(), '{}', false);".format(
-        # db[combobox.get()]["id"], dt
         id,
         data,
     )
@@ -138,6 +192,8 @@ def insert_data(id, data):
     conn2.commit()
     cursor2.close()
     conn2.close()
+    get_tasks()
+    # update_tasks_view(tree)
 
 
 def view_calendar():
@@ -157,6 +213,9 @@ def view_calendar():
                 combobox.get(), dt.strftime("%d.%m.%Y г.")
             )
             insert_data(db[combobox.get()]["id"], dt)
+            get_tasks()
+            add_task_in_view(tree, combobox.get(), dt)
+            # update_tasks_view(tree)
         top.destroy()
 
     top = Toplevel(root)
@@ -191,6 +250,7 @@ def print_date(n=True):
         combobox.get(), dt.strftime("%d.%m.%Y г."), db[combobox.get()]["id"]
     )
     insert_data(db[combobox.get()]["id"], dt)
+    add_task_in_view(tree, combobox.get(), dt)
 
 
 columns = ("Task", "Data Start")
@@ -202,15 +262,27 @@ style.configure(
     "Treeview",
     background="#4682B4",
     fieldbackground="silver",
-    foreground="white",
+    foreground="black",
 )
 
 # style.configure("Button", font=("Helvetica", 12))
 
+
 tree = ttk.Treeview(root, columns=columns, show="headings")
-tree.heading("Task", text="Task")
-tree.heading("Data Start", text="Data Start")
-tree.grid(row=5, column=0, sticky="nsew", columnspan=4)
+tree.heading("Task", text="Задача")
+tree.heading("Data Start", text="Плановая дата")
+tree.grid(row=5, column=0, sticky="ew", columnspan=4)
+
+scrollbar = ttk.Scrollbar(root, orient=VERTICAL, command=tree.yview)
+tree["yscrollcommand"] = scrollbar.set
+# type: ignore
+scrollbar.grid(
+    row=5,
+    column=4,
+    sticky="ns",
+)
+
+update_tasks_view(tree)
 
 s = ttk.Style()
 s.configure("my.TButton", font=("Helvetica", 12))
