@@ -1,13 +1,14 @@
+from mainform import Ui_MainWindow
 from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication, QMainWindow
 
 # from WinPyQT.* import loadUiType
 
-Form, Window = uic.load_ui.loadUiType("WinPyQT\\untitled.ui")
+# Form, Window = uic.load_ui.loadUiType("WinPyQT\\untitled.ui")
 
 app = QApplication([])
-window = Window()
-form = Form()
+window = QMainWindow()
+form = Ui_MainWindow()
 form.setupUi(window)
 window.show()
 app.exec()

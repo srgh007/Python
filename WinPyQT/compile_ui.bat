@@ -1,0 +1,1 @@
+pyuic6 E:\Python\WinPyQT\mainform.ui -o E:\Python\WinPyQT\mainform.py
