@@ -42,7 +42,7 @@
     <normaloff>process.ico</normaloff>process.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableView" name="tableView">
+   <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -51,6 +51,64 @@
       <height>201</height>
      </rect>
     </property>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>Задача</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Плановая дата</string>
+     </property>
+     <property name="textAlignment">
+      <set>AlignJustify|AlignVCenter</set>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Выполнено</string>
+     </property>
+    </column>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">

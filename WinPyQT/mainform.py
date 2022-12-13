@@ -13,7 +13,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(500, 300)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
@@ -22,13 +24,44 @@ class Ui_MainWindow(object):
         MainWindow.setMaximumSize(QtCore.QSize(500, 300))
         MainWindow.setBaseSize(QtCore.QSize(600, 400))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("E:\\Python\\WinPyQT\\process.ico"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(
+            QtGui.QPixmap("E:\\Python\\WinPyQT\\process.ico"),
+            QtGui.QIcon.Mode.Normal,
+            QtGui.QIcon.State.Off,
+        )
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.tableView = QtWidgets.QTableView(self.centralwidget)
-        self.tableView.setGeometry(QtCore.QRect(10, 10, 481, 201))
-        self.tableView.setObjectName("tableView")
+        self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableWidget.setGeometry(QtCore.QRect(10, 10, 481, 201))
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setRowCount(8)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(6, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        item.setTextAlignment(
+            QtCore.Qt.AlignmentFlag.AlignJustify | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
+        self.tableWidget.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, item)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(10, 220, 151, 50))
         self.pushButton.setMinimumSize(QtCore.QSize(151, 50))
@@ -44,7 +77,9 @@ class Ui_MainWindow(object):
         self.comboBox.setMinimumSize(QtCore.QSize(320, 50))
         self.comboBox.setMaximumSize(QtCore.QSize(320, 50))
         self.comboBox.setBaseSize(QtCore.QSize(320, 50))
-        self.comboBox.setSizeAdjustPolicy(QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents)
+        self.comboBox.setSizeAdjustPolicy(
+            QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents
+        )
         self.comboBox.setObjectName("comboBox")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -61,3 +96,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        item = self.tableWidget.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Задача"))
+        item = self.tableWidget.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Плановая дата"))
+        item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Выполнено"))
