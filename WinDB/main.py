@@ -3,6 +3,7 @@ import sys
 from LoadData import postLoad
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5.QtSql import QSqlDatabase
 from PyQt5.QtWidgets import *
 
 
@@ -20,11 +21,41 @@ class Table(QWidget):
 
         # # Тодо оптимизации 2 добавить данные
 
-        for row in range(4):
-            for column in range(3):
-                item = QStandardItem("row %s,column %s" % (row, column))
-                # Установить текстовое значение каждой позиции
-                self.model.setItem(row, column, item)
+        # x = [(1, 3, 5), (2, 4, 6)]
+        # bl = dict('True':'yes','False':'no')
+
+        # n = QDBConnect    # return true;
+
+        def loadData(x):
+            raw = 0
+            col = 0
+            for i in x:
+                for o in i:
+                    if col == 2:
+                        if o == "True":
+                            o = "YES"
+                        if o == "False":
+                            o = "NO"
+                    item = QStandardItem("{}".format(o))
+                    self.model.setItem(raw, col, item)
+                    col += 1
+                    if col > 2:
+                        col = 0
+                raw += 1
+
+        def gettodaytasklist():
+            tasklist = []
+            p_today_tasks = postLoad()
+            tasklist = p_today_tasks.setListFromDb()
+            loadData(tasklist)
+
+        gettodaytasklist()
+
+        # for row in range(4):
+        #     for column in range(3):
+        #         item = QStandardItem("row %s,column %s" % (row, column))
+        #         # Установить текстовое значение каждой позиции
+        #         self.model.setItem(row, column, item)
 
         # Создать представление таблицы, установить модель на пользовательскую модель
         self.tableView = QTableView()
@@ -62,6 +93,7 @@ class Table(QWidget):
 
         buttonToday = QPushButton(self)
         buttonToday.setText("Сегодня")
+        buttonToday.clicked.connect(gettodaytasklist)
         buttonToday.setMinimumSize(QSize(230, 30))
         buttonToday.setMaximumSize(QSize(230, 30))
         buttonTomorrow = QPushButton(self)

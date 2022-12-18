@@ -35,7 +35,7 @@ class postLoad:
             db[row["title"]] = dict(title=row["title"], id=row["id"])
         conn.close()
         cursor.close()
-        return list(db)
+        return db
 
     def getData(self):
         conn = psycopg2.connect(
@@ -91,7 +91,7 @@ class postLoad:
         tmplist = []
         for row in tmpdict:
             pd = tmpdict[row]["plan_date"].strftime("%d.%m.%Y")
-            title = tmpdict[row]["plan_date"]
+            title = tmpdict[row]["title"]
             i_d = tmpdict[row]["is_done"]
             tmplist.append((f"{title}", f"{pd}", f"{i_d}"))
         conn.close()
