@@ -16,7 +16,7 @@ iParentModelId;Код родит. модели (в АМ);
 cPItemStatus;Результат обработки;
 cCiType;Тип КЭ;Тип КЭ
 cCiSubType;Подтип КЭ;Подтип КЭ
-cFKpurpose;Назначение;
+cFKpurpose;Назначение;Назначение
 cFKoperationSrv;Операционный сервис;
 cFKITSystemGK;Подсистема по ГК;
 cFKidnumber;Идентификатор СУЭ;

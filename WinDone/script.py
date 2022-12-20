@@ -209,6 +209,7 @@ def view_calendar():
         else:
             dt = datetime.now()
             dt = cal.selection_get()
+            # if type(dt) == type(datetime):
             L3["text"] = 'Задача "{}" запланирована на {}'.format(
                 combobox.get(), dt.strftime("%d.%m.%Y г.")
             )
