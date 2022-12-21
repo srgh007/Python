@@ -33,17 +33,6 @@ with open("CSVDecode\\mapping.csv", encoding="UTF8") as csvfile:
     # print(csvlist["cModelName"])
     # print(maplist["Подтип КЭ"])
 
-# f = []
-# out = ""
-# outfile = ""
-# for (dirpath, dirnames, filenames) in walk("E:\\Python\\CSVDecode\\OUT"):
-#     out = "{}\\{}".format(dirpath, filenames[0])
-#     out = os.path.join(dirpath, filenames[0])
-#     outfile = filenames[0]
-#     break
-
-# df = pandas.read_csv(out, delimiter=";")
-
 del maplist[""]
 
 outfile = ""
