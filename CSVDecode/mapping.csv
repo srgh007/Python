@@ -3,7 +3,7 @@ lAmFKbufferId;lAmFKbufferId;
 dUpdate;Изменено;
 lTenantId;Код ссылки Владелец;
 cFKcinumber;Номер КЭ;
-cModelName;Модель (название);
+cModelName;Модель (название);Модель
 cVendor;Производитель;Производитель
 cSupplier;Поставщик (название);
 iVendorId;Код производителя (в АМ);
