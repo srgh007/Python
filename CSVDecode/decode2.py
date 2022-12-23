@@ -2,6 +2,7 @@ import csv
 import fileinput
 import locale
 import os
+import re
 import sys
 from os import walk
 
@@ -46,18 +47,50 @@ print(cell_vals)
 
 # listprms = []
 
+listcols = []
+dictpage = {}
+
+# for row in records:
+#     db[row["title"]] = dict(title=row["title"], id=row["id"])
+# print()
+
 
 def listOfparams():
-    listprms = []
+    maxrow = 0
     for i in range(65, 90):
-        listprms.append(sheet_val["{}4".format(chr(i))].value)
-
-    for g in range(65, 66):
-        for i in range(65, 90):
-            if sheet_val["{}{}4".format(chr(g), chr(i))].value != None:
-                listprms.append(sheet_val["A{}4".format(chr(i))].value)
+        listcols.append(sheet_val["{}4".format(chr(i))].value)
+        j = 5  # for j in range(5, 100):
+        for j in range(5, sheet_val.max_row):
+            # while sheet_val["{}{}".format(chr(i), j)].value != None:
+            # print(sheet_val["{}{}".format(chr(i), j)].value)
+            if sheet_val["{}{}".format(chr(i), j)].value != None:
+                dictpage[(sheet_val["{}4".format(chr(i))].value, j)] = sheet_val[
+                    "{}{}".format(chr(i), j)
+                ].value
             else:
-                return listprms
+                dictpage[(sheet_val["{}4".format(chr(i))].value, j)] = ""
+    #             j += 1
+    #             maxrow = j
+    #         else:
+    #             break
+    # return maxrow
+    # for g in range(65, 66):
+    #     for i in range(65, 90):
+    #         if sheet_val["{}{}4".format(chr(g), chr(i))].value != None:
+    #             listprms.append(sheet_val["{}{}4".format(chr(g), chr(i))].value)
+    #             # x = sheet_val["{}{}5".format(chr(g), chr(i))].value
+    #             for j in range(5, 10):
+    #                 print(sheet_val["{}{}{}".format(chr(g), chr(i), j)].value)
+    #                 if sheet_val["{}{}{}".format(chr(g), chr(i), j)].value != None:
+    #                     dictcolumns[
+    #                         sheet_val["{}{}4".format(chr(g), chr(i))]
+    #                         .value : sheet_val["{}{}{}".format(chr(g), chr(i), j)]
+    #                         .value
+    #                     ]
+    #                 else:
+    #                     continue
+    #         else:
+    #             return
 
     # for i in range(65, 90):
     #     if sheet_val["B{}4".format(chr(i))].value != None:
@@ -66,7 +99,31 @@ def listOfparams():
     #         return listprms
 
 
-# print(listOfparams()[0])
+listOfparams()
+
+# print(xrow)
+
+dcttple = tuple(dictpage.keys())
+
+dictcolumns = [dictpage[("Серийный номер", n)] for n in range(5, sheet_val.max_row)]
+
+print(dictcolumns)
+
+dictrows = [dictpage[(z, 5)] for z in listcols]
+
+print(dictrows)
+# print(dictpage[("Операционный сервис", 5)])
+
+# onecol = [dictpage[("Идентификационный номер (маркировка)"), x] for x in dcttple[-1]]
+# print(onecol)
+# print(dictpage)
+
+
+# print(dcttple[0])
+# print(list(dcttple[0,]))
+# print(dictcolumns[("Серийный номер", 8)])
+
+# print()
 
 # type: ignore
 csvlist = {}
