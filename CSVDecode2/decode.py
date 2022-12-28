@@ -65,7 +65,10 @@ with open(outfile, encoding="UTF8") as csv_file:
     #     pass
     # else:
     if "cStatus" in list_of_column_names[0]:
-        df["cStore"] = 0
+        updated = df["cStatus"] != "На складе"
+        df.loc[updated, "cStore"] = "0"
+        updated = df["cStatus"] == "На складе"
+        df.loc[updated, "cStore"] = "FKIndefined_для миграции"
 
     # print(list_of_column_names[0][0])
 
