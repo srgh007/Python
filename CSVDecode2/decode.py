@@ -35,7 +35,7 @@ with open("CSVDecode2\\citmapping.csv", encoding="UTF8") as csvfile:
 
 # del maplist[""]
 
-print(maplist)
+# print(maplist)
 
 outfile = ""
 for (dirpath, dirnames, filenames) in walk("E:\\Python\\CSVDecode2\\OUT"):
@@ -45,3 +45,49 @@ df = pandas.read_csv(outfile, sep=r";", index_col=False)
 
 df.rename(columns=maplist, inplace=True)
 df.to_csv(outfile, sep=";", index=False)
+
+# list to store the names of columns
+list_of_column_names = []
+
+with open(outfile, encoding="UTF8") as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=";")
+    # loop to iterate through the rows of csv
+    for row in csv_reader:
+        # adding the first row
+        list_of_column_names.append(row)
+        # breaking the loop after the
+        # first iteration itself
+        break
+    # printing the result
+    print("List of column names : ", list_of_column_names[0])
+
+    # if "cStore" in list_of_column_names[0]:
+    #     pass
+    # else:
+    if "cStatus" in list_of_column_names[0]:
+        df["cStore"] = 0
+
+    # print(list_of_column_names[0][0])
+
+    if "cCiSubType" in list_of_column_names[0]:
+        updated = df["cCiSubType"] != "Серверная консоль (KVM)"
+        df.loc[updated, "cNatureName"] = "Computer"
+        updated = df["cCiSubType"] == "Серверная консоль (KVM)"
+        df.loc[updated, "cNatureName"] = "Сетевое аппаратное обеспечение"
+
+        # if "cNatureName" in list_of_column_names[0]:
+df.to_csv(outfile, sep=";", index=False)
+
+# updated = df["cCiSubType"] == "Сервер x86"
+# df.loc[updated, "cNatureName"] = "Computer"
+
+# df.to_csv(outfile, sep=";", index=False)
+
+# Select case ['ci.subtype']
+# case "Сервер х86"       res = "Computer"
+# case "Серверное шасси"       res = "Computer"
+# case "Серверная консоль (KVM)"       res = "Сетевое аппаратное обеспечение"
+# case "IBM Power Systems (Series P)"       res = "Computer"
+# case "Виртуальная машина"       res = "Computer"
+# case "HP Superdome"       res= "Computer"
+# case else       res = "Computer"End selectRetVal = res
