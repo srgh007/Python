@@ -26,7 +26,7 @@ FKctrlMAC;ctrl.mac
 FKctrlIP;ctrl.ip
 FKctrlHost;ctrl.host
 IFKPower;power
-iFKfloor;iFKfloor
+iFKfloor;floor
 TcpIpHostName;hostname
 PhysicalAddress;mac
 TcpIpAddress;ip
@@ -40,7 +40,7 @@ cLocation;loc.name
 cCity;cCity
 cCiSubType;ci.subtype
 cCiType;ci.type
-cArea;cArea
+cArea;ci.area
 cAdmin;cAdmin
 cMaterial;material
 cModelName;model.name
