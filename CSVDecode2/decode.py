@@ -41,7 +41,7 @@ outfile = ""
 for (dirpath, dirnames, filenames) in walk("E:\\Python\\CSVDecode2\\OUT"):
     outfile = os.path.join(dirpath, filenames[0])
 
-df = pandas.read_csv(outfile, sep=r";", index_col=False)
+df = pandas.read_csv(outfile, sep=r";", index_col=False, keep_default_na=False)
 
 df.rename(columns=maplist, inplace=True)
 df.to_csv(outfile, sep=";", index=False)
@@ -61,9 +61,32 @@ with open(outfile, encoding="UTF8") as csv_file:
     # printing the result
     print("List of column names : ", list_of_column_names[0])
 
-    # if "cStore" in list_of_column_names[0]:
-    #     pass
-    # else:
+    # Одиночные значения
+    df["cFKtofk"] = 99
+    df["cUser"] = 0
+    df["bUseCupboard"] = 1
+    df["Activated"] = 1
+    df["cCity"] = ""
+    df["iLoadNum"] = 999
+    # df["cGarSupplier"] = ##
+    # Обработчики
+    updated = df["cCiSubType"] == "Сервер x86"
+    df.loc[updated, "cParentModelName"] = "Сервер х86"
+    updated = df["cCiSubType"] == "Сервер х86"
+    df.loc[updated, "cParentModelName"] = "Сервер х86"
+    updated = df["cCiSubType"] == "Серверное шасси"
+    df.loc[updated, "cParentModelName"] = "Серверное шасси"
+    updated = df["cCiSubType"] == "Консоль (KVM)"
+    df.loc[updated, "cParentModelName"] = "Серверная консоль"
+    updated = df["cCiSubType"] == "IBM Series P"
+    df.loc[updated, "cParentModelName"] = "Сервер RISC"
+    updated = df["cParentModelName"] == ""
+    df.loc[updated, "cParentModelName"] = "Сервер RISC"
+
+    if "admin" in list_of_column_names[0]:
+        updated = df["admin"] == ""
+        df.loc[updated, "cAdmin"] = "Куратор не присвоен"
+
     if "cStatus" in list_of_column_names[0]:
         updated = df["cStatus"] != "На складе"
         df.loc[updated, "cStore"] = "0"

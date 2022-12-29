@@ -57,9 +57,9 @@ cFKITSystemGK;ci.subsystem
 cFKInventoryNumber;inventory.no
 cFKidnumber;identity.no
 cNameByContractSupp;name.by.contract
-cGarSupplier;cGarSupplier
+cGarSupplier;supplier
 cGarYear;year
-cPostGatContr;cPostGatContr
+cPostGatContr;company.after
 cContractGuaranteeName;contract.after
 cContractModernName;contract.upgd1
 cModContrUpg1;year.upgd1
