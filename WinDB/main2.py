@@ -116,15 +116,6 @@ class Table(QWidget):
         # self.tableView.setModel(mod)
         self.update()
 
-    def delete_data(self, id):
-        delsql = "DELETE FROM public.queue_tasks WHERE id = {}".format(id)
-        ls = LoadSQL()
-        query = QtSql.QSqlQuery()
-        query.exec(delsql)
-        self.model.setQuery(ls.setQuery(0))
-        # self.tableView.setModel(mod)
-        self.update()
-
     def view_form(self):
         self.secondForm.show()
 

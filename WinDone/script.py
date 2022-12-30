@@ -209,9 +209,11 @@ def view_calendar():
         else:
             dt = datetime.now()
             dt = cal.selection_get()
-            L3["text"] = 'Задача "{}" запланирована на {}'.format(
-                combobox.get(), dt.strftime("%d.%m.%Y г.")
-            )
+            # if type(dt) == type(datetime):
+            if dt != None:
+                L3["text"] = 'Задача "{}" запланирована на {}'.format(
+                    combobox.get(), dt.strftime("%d.%m.%Y г.")
+                )
             insert_data(db[combobox.get()]["id"], dt)
             get_tasks()
             add_task_in_view(tree, combobox.get(), dt)
