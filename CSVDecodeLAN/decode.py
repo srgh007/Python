@@ -117,7 +117,9 @@ with open(outfile, encoding="UTF8") as csv_file:
         updated = df["cCiSubType"] != ""
         df.loc[updated, "cNatureName"] = "Сетевое аппаратное обеспечение"
 
-        # if "cNatureName" in list_of_column_names[0]:
+print(df["cLocation"])
+
+# if "cNatureName" in list_of_column_names[0]:
 df.to_csv(outfile, sep=";", index=False)
 
 # updated = df["cCiSubType"] == "Сервер x86"

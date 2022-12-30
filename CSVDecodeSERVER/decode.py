@@ -102,13 +102,21 @@ with open(outfile, encoding="UTF8") as csv_file:
         updated = df["cCiSubType"] == "Серверная консоль (KVM)"
         df.loc[updated, "cNatureName"] = "Сетевое аппаратное обеспечение"
 
-        # if "cNatureName" in list_of_column_names[0]:
-df.to_csv(outfile, sep=";", index=False)
+# print(df["cFKidnumber"])
+# tempdf = df.copy(deep=True)
+
+# tempdf["len_sue"] = df["cFKidnumber"].apply(lambda x: len(x))
+# updated = ["len_sue"] != "18"
+# tempdf.loc[updated, "less_than18"] = 1
+# print(tempdf.groupby("len_sue")["len_sue"].count())
+
+# if "cNatureName" in list_of_column_names[0]:
+# df.to_csv(outfile, sep=";", index=False)
 
 # updated = df["cCiSubType"] == "Сервер x86"
 # df.loc[updated, "cNatureName"] = "Computer"
 
-# df.to_csv(outfile, sep=";", index=False)
+df.to_csv(outfile, sep=";", index=False)
 
 # Select case ['ci.subtype']
 # case "Сервер х86"       res = "Computer"
