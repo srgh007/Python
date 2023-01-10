@@ -2,6 +2,7 @@ import csv
 import fileinput
 import locale
 import os
+import re
 import sys
 from os import walk
 
@@ -117,21 +118,37 @@ with open(outfile, encoding="UTF8") as csv_file:
         updated = df["cCiSubType"] != ""
         df.loc[updated, "cNatureName"] = "Сетевое аппаратное обеспечение"
 
-print(df["cLocation"])
 
-# if "cNatureName" in list_of_column_names[0]:
-df.to_csv(outfile, sep=";", index=False)
+def repl(x):
+    return x.replace(chr(171), chr(34)).replace(chr(187), chr(34))
 
-# updated = df["cCiSubType"] == "Сервер x86"
-# df.loc[updated, "cNatureName"] = "Computer"
 
-# df.to_csv(outfile, sep=";", index=False)
+df["cGarSupplier"] = df["cGarSupplier"].apply(repl)
+df.to_csv(outfile, sep=";", index=False, quoting=csv.QUOTE_NONE)
 
-# Select case ['ci.subtype']
-# case "Сервер х86"       res = "Computer"
-# case "Серверное шасси"       res = "Computer"
-# case "Серверная консоль (KVM)"       res = "Сетевое аппаратное обеспечение"
-# case "IBM Power Systems (Series P)"       res = "Computer"
-# case "Виртуальная машина"       res = "Computer"
-# case "HP Superdome"       res= "Computer"
-# case else       res = "Computer"End selectRetVal = res
+
+# a = []
+# for i in x:
+#     if i == chr(171) or i == chr(187):
+#         a.append("|")
+#     else:
+#         a.append(i)
+
+# x = x.replace(chr(187), "")
+# StrInfo = StrInfo.replace(chr(191), chr(172))
+# StrInfo = StrInfo.replace(chr(172), chr(39))
+# print("".join(a))
+# return "".join(a)
+
+
+# print(chr(187))
+# print(chr(171))
+
+
+# df["cGarSupplier2"] = df["cGarSupplier2"].apply(lambda x: x.replace("|", "\""))
+
+# del df["cGarSupplier2"]
+
+# print(df["cGarSupplier"])
+
+# df.to_csv(outfile, sep=";", index=False,quoting=csv.QUOTE_NONE)

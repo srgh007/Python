@@ -4,6 +4,8 @@
     "python.linting.pylintEnabled": false,
     "python.analysis.typeCheckingMode": "basic",
     "editor.formatOnSave": true,
+    "prettier.singleQuote": true,
+    quote_type = single,
     "editor.formatOnSaveMode": "file",
     "window.zoomLevel": 1,
     "python.formatting.provider": "black",
