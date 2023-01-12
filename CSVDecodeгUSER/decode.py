@@ -191,7 +191,7 @@ df.loc[updated, "cParentModelName"] = "Misc"
 updated = df["cUser"] == ""
 df.loc[updated, "cUser"] = "Не присвоен Юзер"
 
-# df.to_csv(outfile, sep=";", index=False)
+df.to_csv(outfile, sep=";", index=False, quoting=csv.QUOTE_NONE)
 
 # df.rename(columns=maplist, inplace=True)
 # df.to_csv(outfile, sep=";", index=False)
