@@ -1,3 +1,4 @@
+import configparser
 import csv
 import fileinput
 import locale
@@ -7,6 +8,9 @@ from os import walk
 
 import numpy as np
 import pandas
+
+# from pathlib import Path
+
 
 # import pyodbc
 
@@ -38,16 +42,26 @@ maplist = {}
 
 # print(maplist)
 
+curdir = os.path.basename(sys.path[0])
+
 outfile = ""
-for (dirpath, dirnames, filenames) in walk("CSVDecodeгUSER\\OUT\\"):
+for (dirpath, dirnames, filenames) in walk("{}\\OUT\\".format(curdir)):
     # type: ignore
     outfile = os.path.join(dirpath, filenames[0])
 
 df = pandas.read_csv(outfile, sep=r";", index_col=False, keep_default_na=False)
 
 # Одиночные подстановки
+thisfolder = os.path.dirname(os.path.abspath(__file__))
+initfile = os.path.join(thisfolder, "config.ini")
+config = configparser.ConfigParser()
+config.read(initfile)
+ufk = config.get("kazna", "ufk")
+
+# print("ufk = {}".format(ufk))
+
 df["cCity"] = ""
-df["cFKtofk"] = "48"
+df["cFKtofk"] = str(ufk)
 df["cAdmin"] = 0
 
 updated = df["cMaterial"] == ""
@@ -177,7 +191,7 @@ df.loc[updated, "cParentModelName"] = "Misc"
 updated = df["cUser"] == ""
 df.loc[updated, "cUser"] = "Не присвоен Юзер"
 
-df.to_csv(outfile, sep=";", index=False)
+# df.to_csv(outfile, sep=";", index=False)
 
 # df.rename(columns=maplist, inplace=True)
 # df.to_csv(outfile, sep=";", index=False)
