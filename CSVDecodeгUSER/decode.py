@@ -45,7 +45,7 @@ maplist = {}
 curdir = os.path.basename(sys.path[0])
 
 outfile = ""
-for (dirpath, dirnames, filenames) in walk("{}\\OUT\\".format(curdir)):
+for (dirpath, dirnames, filenames) in walk(f"{format(curdir)}\\OUT\\"):
     # type: ignore
     outfile = os.path.join(dirpath, filenames[0])
 
@@ -58,7 +58,7 @@ config = configparser.ConfigParser()
 config.read(initfile)
 ufk = config.get("kazna", "ufk")
 
-# print("ufk = {}".format(ufk))
+print("ufk = {}".format(ufk))
 
 df["cCity"] = ""
 df["cFKtofk"] = str(ufk)
