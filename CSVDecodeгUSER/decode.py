@@ -45,7 +45,7 @@ maplist = {}
 curdir = os.path.basename(sys.path[0])
 
 outfile = ""
-for (dirpath, dirnames, filenames) in walk(f"{format(curdir)}\\OUT\\"):
+for (dirpath, dirnames, filenames) in walk(f"{curdir}\\OUT\\"):
     # type: ignore
     outfile = os.path.join(dirpath, filenames[0])
 
