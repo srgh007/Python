@@ -1,29 +1,14 @@
 out.txt
 
 CSVDecodeLAN/IN/SHDLoadfromCSV.csv
-
 CSVDecodeLAN/OUT/Шаблон сетевое оборудование.csv
-
 CSVDecodeLAN/IN/Шаблон сетевое оборудование.csv
-
 CSVDecodeSERVER/OUT/Шаблон серверное оборудование.csv
-
 CSVDecodeSERVER/IN/Шаблон серверное оборудование.csv
-
 CSVDecodeгUSER/IN/Шаблон Польз\+Пер\+Тел.csv
-
-CSVDecodeгUSER/OUT/Шаблон Польз\+Пер\+Тел.csv
-
 *.csv
-
 *.xlsx
-
 CSVDecodeгUSER/CSVDecodeгUSER_120123.7z
-
-CSVDecode/IN/
-
-CSVDecode2/OUT/
-
-CSVDecodeSERVER/IN/
-
-*.7z
+CSVDecodeLAN/IN/SHDLoadfromCSV.csv
+CSVDecodeLAN/OUT/Шаблон сетевое оборудование.csv
+CSVDecodeLAN/IN/Шаблон сетевое оборудование.csv
