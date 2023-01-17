@@ -17,6 +17,7 @@ CSVDecodeгUSER/OUT/Шаблон Польз\+Пер\+Тел.csv
 *.csv
 
 *.xlsx
+
 CSVDecodeгUSER/CSVDecodeгUSER_120123.7z
 
 CSVDecode/IN/
@@ -24,3 +25,5 @@ CSVDecode/IN/
 CSVDecode2/OUT/
 
 CSVDecodeSERVER/IN/
+
+*.7z
