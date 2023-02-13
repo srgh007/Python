@@ -1,3 +1,4 @@
+import configparser
 import csv
 import fileinput
 import locale
@@ -22,6 +23,13 @@ import pandas
 
 # for row in cursor:
 #     print("row = %r" % (row,))
+thisfolder = os.path.dirname(os.path.abspath(__file__))
+initfile = os.path.join(thisfolder, "config.ini")
+config = configparser.ConfigParser()
+config.read(initfile)
+ufk = config.get("kazna", "ufk")
+
+print("ufk = {}".format(ufk))
 
 locale.setlocale(locale.LC_ALL, "ru_RU")
 csvlist = {}
@@ -64,7 +72,7 @@ with open(outfile, encoding="UTF8") as csv_file:
     # print("List of column names : ".format(list_of_column_names[0]))
 
     # Одиночные значения
-    df["cFKtofk"] = "99"  # Код ТоФК ПРОСТАВИТЬ!
+    df["cFKtofk"] = str(ufk)  # Код ТоФК ПРОСТАВИТЬ!
     df["cUser"] = 0
     # df["bUseCupboard"] = 1
     # df["Activated"] = 1
